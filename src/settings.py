@@ -21,7 +21,7 @@ PROJECT_NAME_FULL: str = "EDD2020: Endoscopy Disease Detection and Segmentation"
 ##################################
 LICENSE: License = License.CC_BY_4_0()
 APPLICATIONS: List[Union[Industry, Domain, Research]] = [Industry.Medical()]
-CATEGORY: Category = Category.Medical()
+CATEGORY: Category = Category.Medical(sensitive_content=True)
 
 
 CV_TASKS: List[CVTask] = [
