@@ -4,7 +4,8 @@ from dataset_tools.convert import unpack_if_archive
 import src.settings as s
 from urllib.parse import unquote, urlparse
 from supervisely.io.fs import get_file_name, get_file_size
-import shutil
+
+# import shutil
 import cv2
 
 from tqdm import tqdm
@@ -59,17 +60,17 @@ def download_dataset(teamfiles_dir: str) -> str:
 def convert_and_upload_supervisely_project(
     api: sly.Api, workspace_id: int, project_name: str
 ) -> sly.ProjectInfo:
-    datasets = [
-        "/mnt/c/users/german/documents/EndoCV2020-Endoscopy-Disease-Detection-Segmentation-subChallenge_data/masks",
-        "/mnt/c/users/german/documents/EndoCV2020-Endoscopy-Disease-Detection-Segmentation-subChallenge_data/bbox",
-    ]
+    dataset_path = "/mnt/c/users/german/documents/EndoCV2020-Endoscopy-Disease-Detection-Segmentation-subChallenge_data/bbox"
+    masks_path = "/mnt/c/Users/German/Documents/EndoCV2020-Endoscopy-Disease-Detection-Segmentation-subChallenge_data/masks"
 
-    directory = os.path.dirname(datasets[0])
-    with open(directory + "/class_list.txt") as class_file:
-        class_names = class_file.read().split("\n")
-
+    # create project and initialize meta
     project = api.project.create(workspace_id, project_name)
     meta = sly.ProjectMeta()
+
+    # read class names and create classes for them
+    directory = os.path.dirname(dataset_path)
+    with open(directory + "/class_list.txt") as class_file:
+        class_names = class_file.read().split("\n")
 
     for name in class_names:
         if name == "":
@@ -78,92 +79,60 @@ def convert_and_upload_supervisely_project(
         meta = meta.add_obj_class(obj_class)
         obj_class_mask = sly.ObjClass(name, sly.Bitmap)
         meta = meta.add_obj_class(obj_class_mask)
-
     api.project.update_meta(project.id, meta)
 
-    def load_image_labels(image_path, labels_path):
-        image_info = api.image.upload_path(
-            dataset_bboxes.id, os.path.basename(image_path), image_path
-        )
-        output = []
-        with open(labels_path) as file:
-            file_split = file.read().rstrip().split("\n")
-        for row in file_split:
-            if row == "":
-                continue
-            output.append(row.split())
-        labels = []
-        height = image_info.height
-        width = image_info.width
-        for bbox in output:
-            xmin, ymin, xmax, ymax, c = bbox
+    # create dataset
+    dataset = api.dataset.create(project.id, "ds0")
 
-            bbox_annotation = sly.Rectangle(int(ymin), int(xmin), int(ymax), int(xmax))
-            obj_class = meta.get_obj_class(c + "_bbox")
-            label = sly.Label(bbox_annotation, obj_class)
-            labels.append(label)
-        ann = sly.Annotation(img_size=[height, width], labels=labels)
-        api.annotation.upload_ann(image_info.id, ann)
-
-    def load_image_labels_mask(image_path, labels_path, class_name):
-        image_info = api.image.get_info_by_name(dataset_mask.id, os.path.basename(image_path))
-        if image_info is None:
-            image_info = api.image.upload_path(
-                dataset_mask.id, os.path.basename(image_path), image_path
-            )
-        mask = cv2.imread(labels_path, cv2.IMREAD_GRAYSCALE)
-        labels = []
-        height = image_info.height
-        width = image_info.width
-        bitmap_annotation = sly.Bitmap(mask)
-        obj_class = meta.get_obj_class(class_name)
-        label = sly.Label(bitmap_annotation, obj_class)
-        labels.append(label)
-
-        ann: sly.Annotation = sly.Annotation.from_json(
-            api.annotation.download_json(image_info.id), meta
-        )
-        ann = ann.add_labels(labels)
-        # ann = sly.Annotation(img_size=[height, width], labels=labels)
-        api.annotation.upload_ann(image_info.id, ann)
-
-    mask_paths = sly.fs.list_files(datasets[0], valid_extensions=[".tif"])
-    bbox_paths = sly.fs.list_files(datasets[1], valid_extensions=[".txt"])
-
-    dataset_mask = api.dataset.create(project.id, os.path.basename(datasets[0]))
-    dataset_bboxes = api.dataset.create(project.id, os.path.basename(datasets[1]))
-
+    # get a list of images and iterate over it
     image_paths = sly.fs.list_files(
-        os.path.join(os.path.dirname(datasets[0]), "originalImages"),
+        os.path.join(os.path.dirname(dataset_path), "originalImages"),
         valid_extensions=[".jpg"],
     )
     pbar = tqdm(total=len(image_paths), desc="images")
     for path in image_paths:
         image_filename = sly.fs.get_file_name(path)
+        bbox_ann_path = os.path.join(dataset_path, (image_filename + ".txt"))
         try:
-            load_image_labels(
-                path, os.path.join(datasets[1], (os.path.basename(path)[:-4] + ".txt"))
-            )
+            # upload an image
+            image_info = api.image.upload_path(dataset.id, image_filename, path)
+
+            # read bbox annotation
+            output = []
+            with open(bbox_ann_path) as file:
+                file_split = file.read().rstrip().split("\n")
+            for row in file_split:
+                if row == "":
+                    continue
+                output.append(row.split())
+
+            # upload annotations
+            labels = []
+            for bbox in output:
+                xmin, ymin, xmax, ymax, c = bbox
+
+                bbox_annotation = sly.Rectangle(int(ymin), int(xmin), int(ymax), int(xmax))
+                obj_class = meta.get_obj_class(c + "_bbox")
+                label = sly.Label(bbox_annotation, obj_class)
+                labels.append(label)
+
+            for file in sly.fs.list_files(masks_path, valid_extensions=[".tif"]):
+                if image_filename in file:
+                    class_name = sly.fs.get_file_name(file).rstrip().split("_")[2]
+                    mask = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
+                    mask_ann = sly.Bitmap(mask)
+                    obj_class_mask = meta.get_obj_class(class_name)
+                    label = sly.Label(mask_ann, obj_class_mask)
+                    labels.append(label)
+
+            ann = sly.Annotation(img_size=[image_info.height, image_info.width], labels=labels)
+            api.annotation.upload_ann(image_info.id, ann)
             pbar.update(1)
         except Exception as e:
             print(e)
             pbar.update(1)
             continue
-        for mask in mask_paths:
-            mask_filename = sly.fs.get_file_name(mask)
-            mask_filename_parts = mask_filename.rstrip().split("_")
-            single_mask_name = mask_filename_parts[0] + "_" + mask_filename_parts[1]
-            class_name = mask_filename_parts[2]
-            if single_mask_name == image_filename:
-                try:
-                    load_image_labels_mask(path, mask, class_name)
-                    pbar.update(1)
-                except Exception as e:
-                    print(e)
-                    pbar.update(1)
-                    continue
     pbar.close()
-
-    print(f"Dataset (id:{dataset_mask.id}) has been successfully created.")
+    print(f"Dataset (id:{dataset.id}) has been successfully created.")
 
     return project
