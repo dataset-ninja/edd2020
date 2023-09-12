@@ -24,10 +24,10 @@ LICENSE: License = License.CC_BY_NC_4_0()
 APPLICATIONS: List[Union[Industry, Domain, Research]] = [Industry.Medical()]
 CATEGORY: Category = Category.Medical()
 
-CV_TASKS: List[CVTask] = [CVTask.ObjectDetection, CVTask.InstanceSegmentation()]
+CV_TASKS: List[CVTask] = [CVTask.ObjectDetection(), CVTask.InstanceSegmentation()]
 ANNOTATION_TYPES: List[AnnotationType] = [
     AnnotationType.ObjectDetection(),
-    AnnotationType.InstanceSegmentation,
+    AnnotationType.InstanceSegmentation(),
 ]
 
 RELEASE_DATE: Optional[str] = "2020-06-03"  # e.g. "YYYY-MM-DD"

@@ -1,3 +1,3 @@
-# ENDOSCOPY DISEASE DETECTION AND SEGMENTATION
+# Endoscopy Disease Detection and Segmentation
 
-ENDOSCOPY DISEASE DETECTION AND SEGMENTATION (EDD2020) is a dataset for object detection and segmentation tasks. 
+EDD2020 is a dataset for object detection and instance segmentation tasks.
