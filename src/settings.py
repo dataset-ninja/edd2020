@@ -14,7 +14,7 @@ from dataset_tools.templates import (
 # * Before uploading to instance #
 ##################################
 PROJECT_NAME: str = "EDD2020"
-PROJECT_NAME_FULL: str = "Endoscopy Disease Detection and Segmentation"
+PROJECT_NAME_FULL: str = "EDD2020: Endoscopy Disease Detection and Segmentation"
 HIDE_DATASET = True  # set False when 100% sure about repo quality
 
 ##################################
@@ -22,9 +22,13 @@ HIDE_DATASET = True  # set False when 100% sure about repo quality
 ##################################
 LICENSE: License = License.CC_BY_NC_4_0()
 APPLICATIONS: List[Union[Industry, Domain, Research]] = [Industry.Medical()]
-CATEGORY: Category = Category.Medical()
+CATEGORY: Category = Category.Medical(sensitive_content=True)
 
-CV_TASKS: List[CVTask] = [CVTask.ObjectDetection(), CVTask.InstanceSegmentation()]
+CV_TASKS: List[CVTask] = [
+    CVTask.ObjectDetection(),
+    CVTask.InstanceSegmentation(),
+    CVTask.SemanticSegmentation(),
+]
 ANNOTATION_TYPES: List[AnnotationType] = [
     AnnotationType.ObjectDetection(),
     AnnotationType.InstanceSegmentation(),
@@ -58,25 +62,27 @@ CLASS2COLOR: Optional[Dict[str, List[str]]] = None
 
 # If you have more than the one paper, put the most relatable link as the first element of the list
 # Use dict key to specify name for a button
-PAPER: Optional[Union[str, List[str], Dict[str, str]]] = None
+PAPER: Optional[Union[str, List[str], Dict[str, str]]] = "https://arxiv.org/abs/2003.03376"
 BLOGPOST: Optional[Union[str, List[str], Dict[str, str]]] = None
-REPOSITORY: Optional[Union[str, List[str], Dict[str, str]]] = None
+REPOSITORY: Optional[
+    Union[str, List[str], Dict[str, str]]
+] = "https://github.com/sharib-vision/EDD2020"
 
-CITATION_URL: Optional[str] = None
+CITATION_URL: Optional[str] = ""
 AUTHORS: Optional[List[str]] = [
-    "Sharib Ali (University of Oxford, Big Data Institute, Department of Engineering Science)",
-    "Barbara Braden (University of Oxford, Translational Gastroenterology Unit, Nuffield Department of Medicine, Experimental Medicine Div., John Radcliffe)",
-    "Dominique Lamarque (Université de Versailles St-Quentin en Yvelines, Hôpital Ambroise Paré)",
-    "Stefano Realdon (Instituto Onclologico Veneto, IOV-IRCCS, Padova, Italy)",
-    "Adam Bailey (University of Oxford, Translational Gastroenterology Unit, Nuffield Department of Medicine, Experimental Medicine Div., John Radcliffe)",
-    "Renato Cannizzaro (CRO Centro Riferimento Oncologico IRCCS Aviano Italy)",
-    "Noha Ghatwary (University of Lincoln, UK)",
-    "Jens Rittscher (University of Oxford, Big Data Institute, Department of Engineering Science)",
-    "Christian Daul (CRAN UMR 7039, University of Lorraine, CNRS, Nancy, France)",
-    "James East (University of Oxford, Translational Gastroenterology Unit, Nuffield Department of Medicine, Experimental Medicine Div., John Radcliffe)",
+    "Sharib Ali",
+    "Barbara Braden",
+    "Dominique Lamarque",
+    "Stefano Realdon",
+    "Adam Bailey",
+    "Renato Cannizzaro",
+    "Noha Ghatwary",
+    "Jens Rittscher",
+    "Christian Daul",
+    "James East",
 ]
 
-ORGANIZATION_NAME: Optional[Union[str, List[str]]] = None
+ORGANIZATION_NAME: Optional[Union[str, List[str]]] = ["UK, Italy, France joint research team"]
 ORGANIZATION_URL: Optional[Union[str, List[str]]] = None
 
 # Set '__PRETEXT__' or '__POSTTEXT__' as a key with string value to add custom text. e.g. SLYTAGSPLIT = {'__POSTTEXT__':'some text}
