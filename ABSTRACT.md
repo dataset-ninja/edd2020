@@ -7,8 +7,8 @@ The dataset includes 380 annotated video frames from different gastrointestinal 
 The EDD2020 dataset consists of five classes for both detection and segmentation tasks, focusing on gastrointestinal tract organs. Patient data has been anonymized and acquired through informed consent. Annotations were performed by clinical experts and post-doctoral researchers, acknowledging some annotation variability due to the subjective nature of interpretation.
 
 The dataset in question features following classes: 
-1. BE (Barrett’s Oesophagus)
-2. suspicious
-3. HGD (high-grade dysplasia)
-4. cancer (adenocarcinoma)
-5. polyp
+1. *BE* (Barrett’s Oesophagus)
+2. *suspicious*
+3. *HGD* (high-grade dysplasia)
+4. *cancer* (adenocarcinoma)
+5. *polyp*
