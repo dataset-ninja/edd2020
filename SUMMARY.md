@@ -4,4 +4,4 @@ The dataset consists of 386 images with 1251 labeled objects belonging to 10 dif
 
 Here is the visualized example grid with animated annotations:
 
-[animated grid](https://github.com/dataset-ninja/edd2020/raw/main/visualizations/horizontal_grid.webm)
+[animated grid](https://github.com/dataset-ninja/edd2020/raw/main/visualizations/poster.png)
