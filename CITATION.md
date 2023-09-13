@@ -13,4 +13,4 @@ If you make use of the EDD2020 data, please cite the following reference:
 }
 ```
 
-[🔗 Source](https://ieee-dataport.org/competitions/endoscopy-disease-detection-and-segmentation-edd2020#files)
+[Source](https://ieee-dataport.org/competitions/endoscopy-disease-detection-and-segmentation-edd2020#files)
