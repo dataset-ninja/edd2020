@@ -25,13 +25,13 @@ APPLICATIONS: List[Union[Industry, Domain, Research]] = [Industry.Medical()]
 CATEGORY: Category = Category.Medical(sensitive_content=True)
 
 CV_TASKS: List[CVTask] = [
-    CVTask.ObjectDetection(),
     CVTask.InstanceSegmentation(),
     CVTask.SemanticSegmentation(),
+    CVTask.ObjectDetection(),    
 ]
 ANNOTATION_TYPES: List[AnnotationType] = [
-    AnnotationType.ObjectDetection(),
     AnnotationType.InstanceSegmentation(),
+    AnnotationType.ObjectDetection(),
 ]
 
 RELEASE_DATE: Optional[str] = "2020-06-03"  # e.g. "YYYY-MM-DD"
