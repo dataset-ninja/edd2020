@@ -39,7 +39,7 @@ if RELEASE_DATE is None:
     RELEASE_YEAR: int = None
 
 HOMEPAGE_URL: str = (
-    "https://ieee-dataport.org/competitions/endoscopy-disease-detection-and-segmentation-edd2020"
+   "https://edd2020.grand-challenge.org/"
 )
 # e.g. "https://some.com/dataset/homepage"
 
@@ -66,9 +66,9 @@ PAPER: Optional[Union[str, List[str], Dict[str, str]]] = "https://arxiv.org/abs/
 BLOGPOST: Optional[Union[str, List[str], Dict[str, str]]] = None
 REPOSITORY: Optional[
     Union[str, List[str], Dict[str, str]]
-] = {"GitHub": "https://github.com/sharib-vision/EDD2020"}
+] = {"GitHub": "https://github.com/sharib-vision/EDD2020", "IEEE":"https://ieee-dataport.org/competitions/endoscopy-disease-detection-and-segmentation-edd2020"}
 
-CITATION_URL: Optional[str] = ""
+CITATION_URL: Optional[str] = "https://ieee-dataport.org/competitions/endoscopy-disease-detection-and-segmentation-edd2020"
 AUTHORS: Optional[List[str]] = [
     "Sharib Ali",
     "Barbara Braden",
@@ -81,14 +81,14 @@ AUTHORS: Optional[List[str]] = [
     "Christian Daul",
     "James East",
 ]
+AUTHORS_CONTACTS: Optional[List[str]] = ["sharib.ali@eng.ox.ac.uk", "http://nghatwary@lincoln.ac.uk/"]
 
-ORGANIZATION_NAME: Optional[Union[str, List[str]]] = ["UK, Italy, France joint research team"]
-ORGANIZATION_URL: Optional[Union[str, List[str]]] = None
+ORGANIZATION_NAME: Optional[Union[str, List[str]]] = ["UK-IT-FR joint research team"]
+ORGANIZATION_URL: Optional[Union[str, List[str]]] = ["https://arxiv.org/abs/2003.03376"]
 
 # Set '__PRETEXT__' or '__POSTTEXT__' as a key with string value to add custom text. e.g. SLYTAGSPLIT = {'__POSTTEXT__':'some text}
 SLYTAGSPLIT: Optional[Dict[str, Union[List[str], str]]] = None
 TAGS: Optional[List[str]] = None
-
 
 SECTION_EXPLORE_CUSTOM_DATASETS: Optional[List[str]] = None
 
@@ -134,6 +134,7 @@ def get_settings():
     settings["repository"] = REPOSITORY
     settings["citation_url"] = CITATION_URL
     settings["authors"] = AUTHORS
+    settings["authors_contacts"] = AUTHORS_CONTACTS
     settings["organization_name"] = ORGANIZATION_NAME
     settings["organization_url"] = ORGANIZATION_URL
     settings["slytagsplit"] = SLYTAGSPLIT
