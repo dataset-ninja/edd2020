@@ -1,6 +1,6 @@
 Dataset **EDD2020** can be downloaded in [Supervisely format](https://developer.supervisely.com/api-references/supervisely-annotation-json-format):
 
- [Download](https://assets.supervisely.com/supervisely-supervisely-assets-public/teams_storage/Y/K/1t/OfIcQ8yb5phrF8zgtGAoS69yQCgnrAzogmmEy7COpNOD1a6JQE57NwSpu9173SqAmi6uVfxxyDrvoWMHU82g6vGyu5KXNhZU04LAsPuFuf6rTPD3fJzHXMijRmqP.tar)
+ [Download](https://www.dropbox.com/scl/fi/g9ybf5mwp83nk6x72s2lf/edd2020-DatasetNinja.tar?rlkey=5ik1817x0ixfhbfiuzusc8ks9&dl=1)
 
 As an alternative, it can be downloaded with *dataset-tools* package:
 ``` bash
